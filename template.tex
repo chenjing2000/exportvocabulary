@@ -1,0 +1,51 @@
+\documentclass[UTF8,11pt,@@page_paper@@,fontset=none]{ctexart}
+\usepackage[@@page_paper@@,@@page_orientation@@,top=@@page_margin_top_mm@@mm,bottom=@@page_margin_bottom_mm@@mm,left=@@page_margin_left_mm@@mm,right=@@page_margin_right_mm@@mm]{geometry}
+\usepackage{fontspec,multicol,xcolor}
+\setmainfont{@@fonts_english@@}
+\setCJKmainfont{@@fonts_chinese@@}
+\newfontfamily\ipafont{@@fonts_phonetic@@}
+\definecolor{WordColor}{HTML}{@@word_color@@}
+\definecolor{PhoneticColor}{HTML}{@@phonetic_color@@}
+\setlength{\columnsep}{@@columns_gap_mm@@mm}
+\setlength{\columnseprule}{@@columns_rule_width_pt@@pt}
+\newcommand{\VocabularyColumns}{@@columns_count@@}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\multicolsep}{0pt}
+\raggedcolumns
+\pagestyle{@@page_page_number@@}
+\newcommand{\articletitle}[1]{%
+  {\centering\fontsize{@@title_font_size_pt@@}{@@title_line_height_pt@@}\selectfont\bfseries #1\par}%
+  \vspace{@@title_space_after_pt@@pt}}
+\newlength{\poswidth}
+\newcommand{\vocabmeaning}[2]{%
+  \par\begingroup\fontsize{@@meaning_font_size_pt@@}{@@meaning_line_height_pt@@}\selectfont
+  \if\relax\detokenize{#1}\relax #2\par\else
+    \settowidth{\poswidth}{\textit{#1}\hspace{@@meaning_pos_gap_pt@@pt}}%
+    \ifdim\poswidth>.45\linewidth
+      \textit{#1}\par #2\par
+    \else
+      \hangindent=\poswidth\hangafter=1\noindent\textit{#1}\hspace{@@meaning_pos_gap_pt@@pt}#2\par
+    \fi
+  \fi\endgroup\vspace{@@spacing_meaning_gap_pt@@pt}}
+\newcommand{\vocabhead}[2]{%
+  \begingroup\fontsize{@@word_font_size_pt@@}{@@word_line_height_pt@@}\selectfont
+  \hyphenpenalty=10000\exhyphenpenalty=10000
+  {\color{WordColor}\bfseries #1}%
+  \if\relax\detokenize{#2}\relax\else
+    \hskip @@phonetic_space_before_pt@@pt\relax
+    {\ipafont\fontsize{@@phonetic_font_size_pt@@}{@@word_line_height_pt@@}\selectfont\color{PhoneticColor}#2}%
+  \fi\par\endgroup}
+\newsavebox{\vocabbox}
+\newcommand{\vocab}[3]{%
+  \par\noindent
+  \sbox{\vocabbox}{\begin{minipage}[t]{\linewidth}\raggedright\vocabhead{#1}{#2}#3\end{minipage}}%
+  \ifdim\dimexpr\ht\vocabbox+\dp\vocabbox\relax>.85\textheight
+    \vocabhead{#1}{#2}#3%
+  \else
+    \usebox{\vocabbox}\par
+  \fi
+  \vspace{@@spacing_entry_gap_pt@@pt}}
+\begin{document}
+@@body@@
+\end{document}
