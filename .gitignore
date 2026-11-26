@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+latex-vocabulary-settings.json
+latex-vocabulary-settings.backup.json
+*.corrupted.*.json
+*.aux
+*.log
+*.xdv
+*.pdf
+latex-vocabulary/
